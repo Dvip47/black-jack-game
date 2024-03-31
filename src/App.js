@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 import VerticalMenu from './VerticalMenu';
 import Hand from './Hand';
 import './App.css';
-import { Container, Row, Col, Label, Input, Button } from 'reactstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { Row, Col } from 'reactstrap';
 import sound from './sound/card_swip_sound.mp3'
-import Card from './Card';
+
 // App Component
 const App = () => {
   const initScore = {
