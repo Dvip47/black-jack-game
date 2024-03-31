@@ -5,7 +5,7 @@ import './App.css';
 import { Row, Col } from 'reactstrap';
 import sound from './sound/card_swip_sound.mp3'
 
-// App Component
+// App Component 
 const App = () => {
   const initScore = {
     dealer: 0,
