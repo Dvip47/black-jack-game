@@ -1,8 +1,6 @@
 import React from 'react';
 import {  Row, Col, Label, Input } from 'reactstrap';
 
-
-
 // Vertical Menu Component
 const VerticalMenu = ({ handleHit, handleSplit, handleDouble, handleStand, balance, betAmount, handleBetAmountChange, handleHalfBet, handleDoubleBet, handleNewBet, totalSum, winner }) => {
     return (
@@ -32,7 +30,7 @@ const VerticalMenu = ({ handleHit, handleSplit, handleDouble, handleStand, balan
                     <button
                         className='btn btn-light'
                         onClick={handleHit}
-                        disabled={totalSum['player'] >= 21 || totalSum['player'] == 0}
+                        disabled={(winner['player'] || winner['dealer'] || winner['tie']) || totalSum['player'] == 0}
                     >
                         Hit
                     </button>
@@ -41,7 +39,7 @@ const VerticalMenu = ({ handleHit, handleSplit, handleDouble, handleStand, balan
                     <button
                         className='btn btn-light'
                         onClick={handleStand}
-                        disabled={totalSum['player'] >= 21 || totalSum['player'] == 0}
+                        disabled={(winner['player'] || winner['dealer'] || winner['tie']) || totalSum['player'] == 0}
                     >
                         Stand
                     </button>
@@ -60,7 +58,7 @@ const VerticalMenu = ({ handleHit, handleSplit, handleDouble, handleStand, balan
                     <button
                         className='btn btn-light'
                         onClick={handleDouble}
-                        disabled={totalSum['player'] >= 21 || totalSum['player'] == 0}
+                        disabled={(winner['player'] || winner['dealer'] || winner['tie']) || totalSum['player'] == 0}
                     >
                         Double
                     </button>
@@ -71,7 +69,7 @@ const VerticalMenu = ({ handleHit, handleSplit, handleDouble, handleStand, balan
                     <button
                         className='btn btn-success btn-lg'
                         onClick={handleNewBet}
-                        disabled={ totalSum['player'] > 0 || (winner['player'] || winner['dealer'] || winner['tie'])}
+                        disabled={totalSum['player'] > 0 || (winner['player'] || winner['dealer'] || winner['tie'])}
                     >
                         Bet
                     </button>

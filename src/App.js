@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import VerticalMenu from './VerticalMenu';
 import Hand from './Hand';
 import './App.css';
-import { Row, Col } from 'reactstrap';
+import { Container, Row, Col, Label, Input, Button } from 'reactstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import sound from './sound/card_swip_sound.mp3'
-
-// App Component 
+import Card from './Card';
+// App Component
 const App = () => {
   const initScore = {
     dealer: 0,
@@ -41,15 +42,57 @@ const App = () => {
     }
   };
 
+  // const handleNewBet = () => {
+  //   setPlayerHand([]);
+  //   setDealerHand([]);
+  //   setTotalSum(initScore);
+  //   setWinner(initWinner);
+  //   if (totalSum['player'] <= 0) {
+  //     handleHit();
+  //   }
+  // };
   const handleNewBet = () => {
     setPlayerHand([]);
     setDealerHand([]);
     setTotalSum(initScore);
     setWinner(initWinner);
+    
     if (totalSum['player'] <= 0) {
-      handleHit();
+        // Draw two cards for player initially
+        const initialPlayerCards = [drawCard(), drawCard()];
+
+        // Draw two cards for dealer initially
+        const initialDealerCards = [drawCard(), drawCard()];
+
+        // Calculate initial total sum for player and dealer
+        let tempPlayerSum = 0;
+        let tempDealerSum = 0;
+        initialPlayerCards.forEach(card => {
+            if (card.rank === 'Q' || card.rank === 'J' || card.rank === 'K' || card.rank === 'A') {
+                tempPlayerSum += 10;
+            } else {
+                tempPlayerSum += parseInt(card.rank);
+            }
+        });
+        initialDealerCards.forEach(card => {
+            if (card.rank === 'Q' || card.rank === 'J' || card.rank === 'K' || card.rank === 'A') {
+                tempDealerSum += 10;
+            } else {
+                tempDealerSum += parseInt(card.rank);
+            }
+        });
+
+        // Update state with initial cards and sums
+        setPlayerHand(initialPlayerCards);
+        setDealerHand(initialDealerCards);
+        setTotalSum({
+            dealer: tempDealerSum,
+            player: tempPlayerSum
+        });
     }
-  };
+};
+
+
 
   const handleHit = () => {
     const card = drawCard();
@@ -66,12 +109,12 @@ const App = () => {
     setTotalSum(tempSum);
     setPlayerHand([...playerHand, card]);
     if (tempSum['player'] >= 21) {
-      handleStand();
-    } else {
-      setTimeout(() => {
-        handleDealerHit();
-      }, 500);
-    }
+      const winnercurrent = determineWinner();
+      let tempWinner = { ...winner };
+      tempWinner[winnercurrent] = true;
+      setWinner(tempWinner);
+      }
+
   };
 
   const handleStand = () => {
@@ -79,19 +122,25 @@ const App = () => {
     let tempWinner = { ...winner };
     tempWinner[winnercurrent] = true;
     setWinner(tempWinner);
+
+    if (tempWinner['player'] || tempWinner['dealer'] || tempWinner['tie']) {
+      return;
+    }else{
+      setTimeout(() => {
+        handleDealerHit();
+      }, 500);
+
+    }
   };
 
   const handleSplit = () => {
-    // Implement logic for splitting the player's hand
-    // For simplicity, let's not implement this feature for now
+    //for splitting the player's hand
   };
 
   const handleDouble = () => {
     const newBetAmount = betAmount * 2;
     if (newBetAmount <= balance) {
-      const card = drawCard();
-      setBetAmount(newBetAmount);
-      setPlayerHand([...playerHand, card]);
+      handleHit();
     }
   };
 
@@ -145,7 +194,7 @@ const App = () => {
     } else {
       return 'tie';
     }
-  }
+  };
 
   return (
     <Row className="app font-weight-bold">
@@ -168,12 +217,12 @@ const App = () => {
       <Col xs='9'>
         <Row>
           <Col xs='10'>
-            <div className="playing-space">
+            {/* <div className="playing-space">
               <Row style={{ height: '350px' }}>
                 <Col>
                   {totalSum['dealer'] > 0 &&
                     <span className='text-white'>
-                      Player Score:{totalSum['dealer']}
+                      Dealer Score:{totalSum['dealer']}
                     </span>
                   }
                   <Hand cards={dealerHand} totalSum={totalSum} type='dealer' winner={winner} />
@@ -187,6 +236,29 @@ const App = () => {
                       Player Score:{totalSum['player']}
                     </span>
                   }
+                  <Hand cards={playerHand} totalSum={totalSum} type='player' winner={winner} />
+                </Row>
+              </Col>
+            </div> */}
+            <div className="playing-space">
+              <Row style={{ height: '350px' }}>
+                <Col>
+                  {totalSum['dealer'] > 0 && (
+                    <span className='text-white'>
+                      Dealer Score: {totalSum['dealer']}
+                    </span>
+                  )}
+                  <Hand cards={dealerHand} totalSum={totalSum} type='dealer' winner={winner} showHiddenLabel={!dealerHand.length && !totalSum['player']} />
+                </Col>
+              </Row>
+              <p style={{ color: 'white' }}>------------------------------------------------------------------Dealer-----------------------------------------------------------------------------------------------------------------------------------------Player-----------------------------------------------------------------------</p>
+              <Col>
+                <Row>
+                  {totalSum['player'] > 0 && (
+                    <span className='text-white'>
+                      Player Score: {totalSum['player']}
+                    </span>
+                  )}
                   <Hand cards={playerHand} totalSum={totalSum} type='player' winner={winner} />
                 </Row>
               </Col>

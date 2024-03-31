@@ -51,7 +51,7 @@ const Card = ({ suit, rank, length, winner, type, dummyCard }) => {
     return (
         <>
             {dummyCard &&
-                <div className="dummy-card">
+                <div className="dummy-card" style={{ fontSize: '235%',height:'300px',width:'150px', backgroundColor:'blue' }}>
                     <p>
                         dummy
                     </p>
