@@ -52,7 +52,7 @@
   color: black;
 }
 .row {
-  position: relative; /* Ensure cards are positioned relative to this container */
+  position: relative;
 }
 
 /* .hand .card {
@@ -63,7 +63,6 @@
 
 .hand .card:not(:first-child) {
   margin-left: -70px; 
-  /* Adjust the negative margin as needed */
 }
 
 .dummy-card{

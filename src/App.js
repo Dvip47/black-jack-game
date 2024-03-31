@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import VerticalMenu from './VerticalMenu';
 import Hand from './Hand';
 import './App.css';
-import { Container, Row, Col, Label, Input, Button } from 'reactstrap';
+import {  Row, Col} from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import sound from './sound/card_swip_sound.mp3'
-import Card from './Card';
+
 // App Component
 const App = () => {
   const initScore = {
@@ -17,7 +17,7 @@ const App = () => {
     player: false,
     tie: false
   }
-  const [balance, setBalance] = useState(1000);
+  const [balance, setBalance] = useState(0);
   const [betAmount, setBetAmount] = useState(0);
   const [playerHand, setPlayerHand] = useState([]);
   const [dealerHand, setDealerHand] = useState([]);
@@ -42,15 +42,7 @@ const App = () => {
     }
   };
 
-  // const handleNewBet = () => {
-  //   setPlayerHand([]);
-  //   setDealerHand([]);
-  //   setTotalSum(initScore);
-  //   setWinner(initWinner);
-  //   if (totalSum['player'] <= 0) {
-  //     handleHit();
-  //   }
-  // };
+
   const handleNewBet = () => {
     setPlayerHand([]);
     setDealerHand([]);
@@ -58,13 +50,10 @@ const App = () => {
     setWinner(initWinner);
     
     if (totalSum['player'] <= 0) {
-        // Draw two cards for player initially
         const initialPlayerCards = [drawCard(), drawCard()];
 
-        // Draw two cards for dealer initially
         const initialDealerCards = [drawCard(), drawCard()];
 
-        // Calculate initial total sum for player and dealer
         let tempPlayerSum = 0;
         let tempDealerSum = 0;
         initialPlayerCards.forEach(card => {
@@ -82,7 +71,6 @@ const App = () => {
             }
         });
 
-        // Update state with initial cards and sums
         setPlayerHand(initialPlayerCards);
         setDealerHand(initialDealerCards);
         setTotalSum({
